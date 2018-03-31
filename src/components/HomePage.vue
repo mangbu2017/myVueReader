@@ -1,16 +1,21 @@
 <template>
   <div class="hello">
+    <!-- 书架 放大镜 three 书城 放大镜 分类 排行榜是放大镜-->
+    <mt-header fixed :title="selected">
+      <img style="height: 28px;margin-left: 10px;" src="./../assets/touxiang.png" slot="left">
+      <img style="height: 20px;margin-left: 65px;" src="./../assets/search.svg" slot="right" @click="linkToSearch" v-if="selected == '排行榜'">
+      <img style="height: 20px;margin-left: 30px;" src="./../assets/search.svg" slot="right" @click="linkToSearch" v-else>
+      <img style="height: 20px;margin-left: 20px;" src="./../assets/list.svg" slot="right" v-if="selected=='书架'">
+      <router-link to="" slot="right" style="margin-left: 20px;" v-if="selected=='书城'">分类</router-link>
+    </mt-header>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="书架">
-        <mt-header fixed :title="selected"></mt-header>
         <book-shelf class="tab-container"></book-shelf>
       </mt-tab-container-item>
       <mt-tab-container-item id="书城">
-        <mt-header fixed :title="selected"></mt-header>
         <book-mall class="tab-container"></book-mall>
       </mt-tab-container-item>
       <mt-tab-container-item id="排行榜">
-        <mt-header fixed :title="selected"></mt-header>
         <ranking-list class="tab-container"></ranking-list>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -31,33 +36,56 @@
   </div>
 </template>
 
+
 <script>
 import BookMall from './mall/Bookmall';
 import RankingList from './rank/RankingList';
 import BookShelf from './shelf/BookShelf';
+import SmallRankingList from './rank/SmallRankingList';
+import BookInfo from './book/BookInfo';
+import SearchBook from './search/SearchBook';
 
 export default {
-  name: 'HomePage',
+  name: 'homepage',
   data () {
     return {
-      selected: '书城',
+      selected: '书架',
     }
   },
-  components: {
+  methods: {
+    linkToSearch() {
+      // console.log('为什么不跳转呢？弟弟');
+      this.$router.push({name: 'search'});
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      console.log(vm);
+      vm.selected = vm.$store.state.backPosition;
+    })
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('SET_BACKPOSITION', this.selected);
+    next();
+  },
+  components: { 
     BookMall,
     RankingList,
-    BookShelf
+    BookShelf,
+    SmallRankingList,
+    BookInfo,
+    SearchBook
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.tab-container {
-	box-sizing: border-box;
-	padding-top: 41px;
-	padding-bottom: 80px;
-	width: 100vw;
-  min-height: 100vh;
+<style scoped lang="less">
+  .tab-container {
+    box-sizing: border-box;
+    padding-top: 6vh;
+    padding-bottom: 11vh;
+    width: 100vw;
+    min-height: 100vh;
 }
 </style>

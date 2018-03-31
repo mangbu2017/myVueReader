@@ -9,6 +9,18 @@
         <hr>
     </div>
 </template>
+<script>
+    export default {
+        name: 'MallLongContent',
+        props: ['title', 'index'],
+        data(){
+            return {
+                staticUrl: 'http://statics.zhuishushenqi.com',
+                books: null
+            }
+        }  
+    }
+</script>
 <style scoped lang="less">
     .mall-type-content {
         position: relative;
