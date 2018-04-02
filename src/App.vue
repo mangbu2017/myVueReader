@@ -1,24 +1,16 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <!-- <keep-alive> -->
       <router-view/>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </template>
 
 <script>
-// import vueRouter from 'vue-router';
-// console.log(vueRouter);
 import ajax from './js/api';
 
 export default {
   name: 'App',
-  beforeCreate(){
-    // 之前无法打印获取到的数据 是因为函数使用错误
-    // ajax.getReviews('51060c88bb1c67cf28000035', 'update', 0, 20).then((res) => {
-    //   console.log(res)
-    // })
-  }
 }
 </script>
 

@@ -110,30 +110,24 @@
                     _last = last;
                     _next = next;
                 }
-                console.log(last, to, next);
                 let ajaxs = [];
-                // 终于找到问题的关键 就是一开始 chapterContents不是空的
                 if(!this.chapterContents[to] && (this.chapters[_to])) {
-                    console.log('to进来了')
                     ajaxs.push(ajax.getBookChapterContent(this.chapters[_to].link))
                 }else {
                     ajaxs.push(null);
                 }
                 if(!this.chapterContents[last] && this.chapters[_last]) {
-                    console.log('last进来了')
                     ajaxs.push(ajax.getBookChapterContent(this.chapters[_last].link))
                 }else {
                     ajaxs.push(null);
                 }
                 if(!this.chapterContents[next] && this.chapters[_next]) {
-                    console.log('next进来了')
                     ajaxs.push(ajax.getBookChapterContent(this.chapters[_next].link))
                 }else {
                     ajaxs.push(null);
                 }
                 Indicator.open('加载中...');
                 Vue.http.all(ajaxs).then(Vue.http.spread( (a, b, c) => {
-                    console.log(a, b, c);
                     if(a) {
                         this.chapterContents[to] = a.data.data.chapter;
                         this.chapterContents[to].body = this.chapterContents[to].body.replace(/\s+/g, '</br>&nbsp&nbsp&nbsp&nbsp&nbsp');
@@ -149,9 +143,6 @@
                     console.log(this.chapterContents);
 
                     this.content = this.chapterContents[this.readingChapter].body;
-                    // 不加nextTick无法获取准确的容器高度
-                    // dom渲染还是慢
-                    // 还有就是会差一个container高度
                     this.$nextTick(() => {
                         let scrollHeight = this.$refs.container.scrollHeight - this.$refs.container.offsetHeight;
                         let containerHeight = this.$refs.container.offsetHeight - this.$refs.footer.offsetHeight - this.$refs.title.offsetHeight;
@@ -233,8 +224,6 @@
         transform: translateY(114vh);
     }
     .downshow-enter-active , .downshow-leave-active{
-        // transition中的selector只要有一个属性发生变化就会
-        // 触发transition
         transition: all .5s ease;
     }
 

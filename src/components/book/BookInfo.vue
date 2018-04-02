@@ -9,7 +9,7 @@
             <img style="height: 3vh;margin-left: 5vw;" src="../../assets/search.svg">        
         </div>
         <div class="mall-type-content">
-            <img src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F_1228859_441552.jpg%2F">
+            <img :src="this.staticUrl + book.cover">
             <div class="mall-type-content-introduce">
                 <p class="introduce-1">{{book.title}}</p>
                 <p class="introduce-2">作者:{{book.author}}|更新:{{update}}</p>
@@ -125,24 +125,13 @@
                 this.joinBookShelf = !this.joinBookShelf;
                 let bookStorage = localStorage.getLocalStorage('bookStorage');
                 if(this.joinBookShelf) {
-                    // 加入
-                    // let flag = true;
-                    if (bookStorage) {
-                        // bookStorage.map((item) => {
-                        //     if(item._id == this.book._id) {
-                        //         flag = false;
-                        //     }
-                        // })
-                        // if(flag) {
+                    if (bookStorage) {  
                             bookStorage[this.book._id] = this.book;
-                        // }
                     }else {
                         bookStorage = {};
                         bookStorage[this.book._id] = this.book;
                     }
                 }else {
-                    // 删除
-                    // 要注意 filter是非变异的数组方法
                     delete bookStorage[this.book._id];
                 }
                 localStorage.setLocalStorage('bookStorage', bookStorage);

@@ -1,11 +1,10 @@
 <template>
-    <!-- v-for 不能用于根标签 会返回多个 -->
-        <div class="ranking-list-item">
-            <img :src="iconUrl" class="icon" v-if="iconUrl">
-            <div :class="{iconmargin: !iconUrl}">{{this.title}}</div>
-            <img class="ud" src="../../assets/down.svg" v-if="ifmore === false">
-            <img class="ud" src="../../assets/up.svg" v-else-if="ifmore === true">
-        </div>
+    <div class="ranking-list-item">
+        <img :src="iconUrl" class="icon" v-if="iconUrl">
+        <div :class="{iconmargin: !iconUrl}">{{this.title}}</div>
+        <img class="ud" src="../../assets/down.svg" v-if="ifmore === false">
+        <img class="ud" src="../../assets/up.svg" v-else-if="ifmore === true">
+    </div>
 </template>
 <script>
     export default {

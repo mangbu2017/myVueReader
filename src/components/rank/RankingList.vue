@@ -50,12 +50,10 @@
             onLinkToRanking(ranking) {
                 this.$router.push({name: 'rankinginfo', params: {type: 'week'}});
                 this.$store.commit('SET_RANKING', ranking);
-                // 现在出了一个问题 就是我们点击的时候 ranking没有被存入store
             }
         },
         data(){
             return {
-                // 引用值propertydefine监控不到
                 ifshow: [false, false],
                 rankinglist: null,
                 itemlist: [{
@@ -98,7 +96,6 @@
         created() {
             ajax.getRankCategory().then(res => {
                 const rankinglist = res.data.data;
-                // 这里有一个非常重要还老被忽略的问题 就是vue对于引用值的监听问题
                 this.itemlist.forEach((item, index) => {
                     this.$set(this.itemlist, index, Object.assign(item, {
                         maleInfo: rankinglist.male[index],

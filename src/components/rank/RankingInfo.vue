@@ -39,7 +39,6 @@
         },
         created() {
             let ranking = this.$store.state.ranking;
-            // 我们在获取ranking的时候 它还没有创建
             this.week = ranking._id;
             this.month = ranking.monthRank;
             this.total = ranking.totalRank;
@@ -67,7 +66,6 @@
                     this.books = res.data.data.ranking.books.slice(0, 20);
                     Indicator.close();
                 }).catch((err)=> {
-                    console.log(err);
                     Indicator.close();
                 })
             }
@@ -77,16 +75,12 @@
                 Indicator.close();
             },
             loadTop() {
-                // 加载更多数据
                 this.$refs.loadmore.onTopLoaded();
             },
 
             loadBottom() {
-                // 加载更多数据
-                // this.allLoaded = true;
                 this.booknum ++;
                 Indicator.open('加载中...');
-                // 根据checked判断获取的类别
 
                 ajax.getRank(this.rankid).then((res) => {
                     this.books = res.data.data.ranking.books.slice(0, 20 * this.booknum);

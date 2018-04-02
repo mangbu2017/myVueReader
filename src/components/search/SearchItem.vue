@@ -26,15 +26,10 @@
         },
         computed: {
             books() {
-                // data是有缓存的，一旦Vuex中值改变了，没法做到响应。
-                // 而放在computed中，虽然也有缓存，但会自动监视依赖。
-                // 两者都有缓存 但是一个有依赖 一个没有依赖
                 return this.$store.state.books;
             }   
         },
         created() {
-            // this.books = this.$store.state.books;
-            // console.log(this.books);
             this.joinList = localStorage.getLocalStorage('bookStorage') ? localStorage.getLocalStorage('bookStorage') : {};
         },    
         methods: {
@@ -43,8 +38,6 @@
                 bookShelf[book._id] = book;
                 localStorage.setLocalStorage('bookStorage', bookShelf);
                 this.$set(this.joinList, book._id, true);
-                console.log(this.joinList);
-                console.log(this.joinList[book._id])
                 Toast({
                     message: '已添加到书架',
                     position: 'middle',
@@ -57,8 +50,6 @@
                 localStorage.setLocalStorage('bookStorage', bookShelf);
                 this.$set(this.joinList, book._id, false);
             
-                console.log(this.joinList);
-                console.log(this.joinList[book._id])
                 Toast({
                     message: '已移除书架',
                     position: 'middle',

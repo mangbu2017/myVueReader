@@ -104,7 +104,6 @@
             background-color: #31a2fb;
             .mall-type-title-cell {
                 margin-left: 1vw;
-                /* 太远了 */
                 span {
                     margin-right: -1.5vw;
                 }

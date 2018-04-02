@@ -11,22 +11,17 @@
 
 <script>
 export default {
-  data () {
-    return {
-        staticUrl: 'http://statics.zhuishushenqi.com',
+    data () {
+        return {
+            staticUrl: 'http://statics.zhuishushenqi.com',
+        }
+    },
+    props: ['book'],
+    methods: {
+        OnBookInfo() {
+            this.$router.push({name: 'bookinfo', params:{bookId: this.book._id}});
+        }
     }
-  },
-  props: ['book'],
-  computed: {
-    // latelyFollower () {
-    //   return (this.book.latelyFollower / 10000).toFixed(1)
-    // }
-  },
-  methods: {
-    OnBookInfo() {
-        this.$router.push({name: 'bookinfo', params:{bookId: this.book._id}});
-    }
-  }
 }
 </script>
 <style scoped lang="less">

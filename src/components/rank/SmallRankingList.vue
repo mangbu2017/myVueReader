@@ -68,16 +68,12 @@
         },
         methods: {
             loadTop() {
-                // 加载更多数据
                 this.$refs.loadmore.onTopLoaded();
             },
 
             loadBottom() {
-                // 加载更多数据
-                // this.allLoaded = true;
                 this.booknum ++;
                 Indicator.open('加载中...');
-                // 根据checked判断获取的类别
                 ajax.getCategoryInfo('male', this.checked, this.major, '', 0, this.booknum * 20).then(res => {
                     this.books = res.data.data.books;
                     this.topStatus = '';
@@ -89,15 +85,11 @@
                 this.$refs.loadmore.onBottomLoaded();
             }
         },
-        // create 应该是在routeenter之前
         created(){
             this.major = this.$route.query.type;
-            // console.log(this.major);
         },
         beforeRouteEnter (to, from, next) {
             next(vm => {
-                // vm.major = vm.$route.query.type;
-                console.log(vm.major);
                 Indicator.open('加载中')
                 ajax.getCategoryInfo('male', 'hot' , vm.major, '', 0, 20).then((res) => {
                     vm.books = res.data.data.books;

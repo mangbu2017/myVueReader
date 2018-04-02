@@ -37,7 +37,6 @@
         },
         created() {
             let history = localStorage.getLocalStorage('history');
-            console.log(history);
             this.history = history ? Array.from(history).reverse() : [];
         },
         methods: {

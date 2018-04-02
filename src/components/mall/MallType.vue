@@ -1,8 +1,6 @@
 <template>
     <div class="mall-type">
-        <!-- gender:key,major:cat.name -->
         <mall-type-title :title="title" :major="this.content"></mall-type-title>
-        <!-- 大哥 一定记住了 异步的我们用v-if渲染 -->
         <div class="mall-type-content" v-if="books">
             <div v-for="(item, index) in books" :key="index">
                 <img :src="staticUrl + item.cover">
@@ -29,12 +27,8 @@
             MallTypeTitle
         },
         created(){
-            console.log(111);
-            // gender, type, major, minor = '', start = 0, limit = 20
             ajax.getCategoryInfo('male', 'hot', this.content, '', 0, 3).then((res) => {
-                console.log(res);
                 this.books = res.data.data.books;
-                console.log(this.books);
             })
         } 
     }
@@ -45,7 +39,6 @@
             background-color: #31a2fb;
             .mall-type-title-cell {
                 margin-left: 1vw;
-                /* 太远了 */
                 span {
                     margin-right: -1.5vw;
                 }
