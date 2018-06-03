@@ -95,7 +95,7 @@
         },
         created() {
             ajax.getRankCategory().then(res => {
-                const rankinglist = res.data.data;
+                const rankinglist = res.data;
                 this.itemlist.forEach((item, index) => {
                     this.$set(this.itemlist, index, Object.assign(item, {
                         maleInfo: rankinglist.male[index],

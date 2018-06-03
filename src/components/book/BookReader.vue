@@ -10,9 +10,11 @@
         <transition name="upshow">
             <div class="reader-upsetting" v-show="ifShowSettings">
                 <img class="toleft" src="../../assets/left.svg" @click="onBack">
-                <button class="wrong">报错</button>
-                <button class="refresh">刷新</button>
-                <img class="nav" src="../../assets/nav.svg">
+                <div class="reader-upsetting-right">
+                    <button class="wrong">报错</button>
+                    <button class="refresh">刷新</button>
+                    <img class="nav" src="../../assets/nav.svg">
+                </div>
             </div>  
         </transition>
         <transition name="downshow">
@@ -81,14 +83,15 @@
             if(chapterContents) {
                 this.chapterContents = chapterContents;
             }
+            // 根据小说id获取小说源
+            // 再根据小说源获取所有的章节
             ajax.getBookSources(this.bookId).then((res) => {
-                console.log(res.data.data);
-                let source = res.data.data[1]._id;
+                let source = res.data[0]._id;
                 ajax.getBookChapters(source).then((res) => {
-                    this.chapters = res.data.data.chapters;
+                    console.log(res.data);
+                    this.chapters = res.data.chapters;
                     this.readingChapter = 0;
                     Indicator.close();
-                    console.log(this.chapters);
                 })
             })
         },
@@ -128,21 +131,24 @@
                 }
                 Indicator.open('加载中...');
                 Vue.http.all(ajaxs).then(Vue.http.spread( (a, b, c) => {
+                    console.log(a, b, c);
                     if(a) {
-                        this.chapterContents[to] = a.data.data.chapter;
+                        this.chapterContents[to] = a.data.chapter;
                         this.chapterContents[to].body = this.chapterContents[to].body.replace(/\s+/g, '</br>&nbsp&nbsp&nbsp&nbsp&nbsp');
                     }
                     if(b) {
-                        this.chapterContents[last] = b.data.data.chapter;
+                        this.chapterContents[last] = b.data.chapter;
                         this.chapterContents[last].body = this.chapterContents[last].body.replace(/\s+/g, '</br>&nbsp&nbsp&nbsp&nbsp&nbsp');
                     }
                     if(c) {
-                        this.chapterContents[next] = c.data.data.chapter;
+                        this.chapterContents[next] = c.data.chapter;
                         this.chapterContents[next].body = this.chapterContents[next].body.replace(/\s+/g, '</br>&nbsp&nbsp&nbsp&nbsp&nbsp');
                     }
                     console.log(this.chapterContents);
 
-                    this.content = this.chapterContents[this.readingChapter].body;
+                    // this.content = this.chapterContents[this.readingChapter].body;
+                    this.content = this.chapterContents[this.readingChapter].cpContent;
+
                     this.$nextTick(() => {
                         let scrollHeight = this.$refs.container.scrollHeight - this.$refs.container.offsetHeight;
                         let containerHeight = this.$refs.container.offsetHeight - this.$refs.footer.offsetHeight - this.$refs.title.offsetHeight;
@@ -184,7 +190,7 @@
             loadingNextChapter() {
                 let num = this.readingChapter + 1;
                 ajax.getBookChapterContent(this.chapters[num].link).then((res) => {
-                    this.chapterContents[this.readingChapter] = res.data.data.chapter.body;
+                    this.chapterContents[this.readingChapter] = res.data.chapter.body;
                 })
             },
             onReverse() {
@@ -258,6 +264,8 @@
             top: 0px;
         }
         .reader-content {
+            // 这个属性在小说阅读中应该非常重要
+            white-space: pre-wrap;
             padding: 5vh 4vw;
             height: auto;
             line-height: 4vh;
@@ -283,27 +291,31 @@
             background-color: rgba(0, 0, 0, .8);
             position: fixed;
             display: flex;
+            justify-content: space-between;
             align-items: center;
             top: 0;
-            img {
+            .toleft {
                 width: 5vw;
-                &.toleft {
-                    margin-left: 1vw;
-                }
-                &.nav {
-                    margin-left: 3vw;
-                }
+                margin-left: 1vw;
             }
-            button {
-                color: #838383;
-                border: 1px solid #838383;
-                border-radius: 4px;
-                background-color: transparent;
-                &.wrong {
-                    margin-left: 60vw;
+            .reader-upsetting-right {
+                display: flex;
+                align-items: center;
+                button {
+                    color: #838383;
+                    border: 1px solid #838383;
+                    border-radius: 4px;
+                    background-color: transparent;
+                    // &.wrong {
+                    //     margin-left: 50vw;
+                    // }
+                    &.refresh {
+                        margin-left: 2vw;
+                    }
                 }
-                &.refresh {
-                    margin-left: 2vw;
+                .nav {
+                    width: 5vw;
+                    margin: 0 3vw;
                 }
             }
         }

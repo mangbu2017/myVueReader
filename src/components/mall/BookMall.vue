@@ -46,7 +46,7 @@
                 Indicator.open('加载中')
                 ajax.getCategoryInfo(gender, type, major, minor).then(response => {
                     Indicator.close()
-                    this.books = response.data.data.books
+                    this.books = response.data.books
                 }).catch(err => {
                     console.log(err)
                 })

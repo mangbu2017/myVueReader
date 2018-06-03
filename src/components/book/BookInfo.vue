@@ -1,15 +1,17 @@
 <template>
     <div class="book-info">
         <div class="book-info-header">
-            <div style="display:flex;align-items: center" @click="onBack">
+            <div class="search-header-left" style="display:flex;align-items: center" @click="onBack">
                 <img src="../../assets/back.svg">
-                <button class="search-header-left">返回</button>
-            </div> 
-            <img style="height: 3vh;margin-left: 65vw;" src="../../assets/bookshelf.svg">
-            <img style="height: 3vh;margin-left: 5vw;" src="../../assets/search.svg">        
-        </div>
+                <div class="search-header-left">返回</div>
+            </div>
+            <div class="search-header-right">
+                <img src="../../assets/bookshelf.svg">
+                <img src="../../assets/search.svg" @click="$router.push({name: 'search'})">
+            </div>
+            </div>
         <div class="mall-type-content">
-            <img :src="this.staticUrl + book.cover">
+            <img :src="this.staticUrl + book.cover" v-if="book.cover">
             <div class="mall-type-content-introduce">
                 <p class="introduce-1">{{book.title}}</p>
                 <p class="introduce-2">作者:{{book.author}}|更新:{{update}}</p>
@@ -69,7 +71,7 @@
                 <img src="../../assets/blueuser.svg" alt="">
                 <span>{{book.author}} 还写过</span>
             </div>
-            <mt-cell class="mall-type-content" style="height: 146px;margin-left: 20px" v-for="(item, index) in comAuthorBooks" :key="index">
+            <mt-cell class="mall-type-content" v-for="(item, index) in comAuthorBooks" :key="index">
                 <img :src="staticUrl + item.cover">
                 <div class="mall-type-content-introduce">
                     <p class="introduce-1">{{item.title}}</p>
@@ -78,15 +80,18 @@
                 </div>
             </mt-cell>
             <div class="book-info-more-footer">
-                <span>更多</span>
-                <img src="../../assets/down.svg">
+                <span @click="more">{{ifmore ? '更多' : '收起'}}</span>
+                <img src="../../assets/down.svg" v-if="ifmore">
+                <img src="../../assets/up.svg" v-else>
             </div>  
         </div>
         <div class="book-info-sametype">
             <div class="book-info-sametype-header">
                 <span class="header-left">同类推荐</span>
-                <img src="../../assets/refresh.svg">
-                <span class="header-right">换一换</span>
+                <div class="header-right-wrapper" @click="exchange">
+                    <img src="../../assets/refresh.svg">
+                    <span class="header-right">换一换</span>
+                </div>
             </div>
             <div class="book-info-sametype-content">
                 <div v-for="(item, index) in aboutBooks" :key="index">
@@ -108,6 +113,8 @@
         name: 'bookinfo',
         data() {
             return {
+                aboutIndex: 0,
+                ifmore: true,
                 joinBookShelf: false,
                 book: {},
                 reviews: [], 
@@ -117,6 +124,18 @@
             }
         },
         methods: {
+            exchange() {
+                console.log(this.about);
+                console.log(this.aboutIndex, this.about.length);
+                if(this.aboutIndex <= this.about.length - 5) {
+                    this.aboutIndex += 4;
+                }else {
+                    this.aboutIndex = 0;
+                }
+            },
+            more() {
+                this.ifmore = !this.ifmore;
+            },
             onBack() {
                 this.$router.back();
                 Indicator.close();
@@ -148,10 +167,14 @@
                 return moment(this.book.updated).format('GGGG/M/D hh:mm:ss');
             },
             comAuthorBooks() {
-                return this.authorBooks.slice(0, 3);
+                if(this.ifmore) {
+                    return this.authorBooks.slice(0, 3);
+                }else {
+                    return this.authorBooks;
+                }
             },
             aboutBooks() {
-                return this.about.slice(0, 4);
+                return this.about.slice(this.aboutIndex, this.aboutIndex + 4);
             },
             bookReviews() {
                 return this.reviews.slice(0, 3);
@@ -165,21 +188,23 @@
             }
             Indicator.open();
             ajax.getBookInfo(bookId).then((res) => {
-                this.book = res.data.data;
+                this.book = res.data;
                 console.log(this.book);
                 ajax.getAuthorBooks(this.book.author).then((res) => {
-                    this.authorBooks = res.data.data.books;
+                    console.log(res);
+                    this.authorBooks = res.data.books;
+                    console.log(this.authorBooks);
                     Indicator.close();
                 })
             })
             
             ajax.getReviews(bookId, 'updated', 0, 2).then((res) => {
-                this.reviews = res.data.data.reviews;
+                this.reviews = res.data.reviews;
                 console.log(this.reviews);
             })
 
             ajax.getBookRecommend(bookId).then((res) => {
-                this.about = res.data.data.books;
+                this.about = res.data.books;
             })
         },
         components: {
@@ -188,12 +213,12 @@
     }
 </script>
 <style scoped lang="less">
-    .book-info{
+    .book-info {
         background-color: #f6f6f6;
-        height: 200vh;
+        // height: 200vh;
         width: 100vw;
         margin-top: 5vh;
-        margin-bottom: 6vh;
+        // margin-bottom: 6vh;
         .book-info-header {
             z-index: 10;
             position: fixed;
@@ -201,28 +226,35 @@
             left: 0;
             width: 100vw;
             align-items: center;
+            justify-content: space-between;
+            // box-sizing: border-box;
             background-color: #26a2ff;
-            box-sizing: border-box;
             color: #fff;
             display: flex;
-            font-size: 14px;
-            height: 40px;
-            padding: 0 10px;
-            img {
-                width: 20px;
-            }
-            button {
+            font-size: 4vw;
+            height: 10vw;
+            // padding-left: 1vw;
+            div {
+                img {
+                    width: 5vw;
+                }
+                width: 20vw;
                 color: #fff;
-                outline: none;
+
                 &.search-header-left {
+                    margin-left: 2vw;
                     font-size: .8rem;
                     font-weight: bold;
-                    padding-left: 0px;
                 }
                 &.search-header-right {
-                    font-size: .7rem;
-                    margin-left: 8px;
-                    font-weight: bold;
+                    // width: 20vw;
+                    line-height: 5vw;
+                    img {
+                        vertical-align: top;
+                        font-size: .7rem;
+                        margin-left: 8px;
+                        font-weight: bold;
+                    }
                 }
             }
         }
@@ -363,7 +395,12 @@
                 }
             }
             .mall-type-content {
+                margin-left: 5vw;
                 position: relative;
+                background-image: linear-gradient(0deg, #d9d9d9, #d9d9d9 50%, transparent 50%);
+                background-size: 100% 1px;
+                background-repeat: no-repeat;
+                background-position: center bottom;
                 img {
                     height: 15vh;
                     width: 20vw;
@@ -394,20 +431,26 @@
             background-color: #fff;
             .book-info-sametype-header {
                 height: 3vh;
+                line-height: 3vh;
                 display: flex;
+                justify-content: space-between;
                 align-items: center;
-                img {
-                    width: 4vw;
-                    margin-left: 70vw;
+                .header-right-wrapper {
+                    line-height: 17px;
+                    img {
+                        vertical-align: top;
+                        width: 4vw;
+                    }
+                    .header-right {
+                        // vertical-align: top;
+                        font-size: .5rem;
+                        color: #424242;
+                    }
+                    margin-right: 2vw;
                 }
                 .header-left {
                     font-size: .6rem;
                     margin-left:  10px;
-                }
-                .header-right {
-                    font-size: .5rem;
-                    color: #424242;
-                    margin-left: 1.2vw;
                 }
             }
             .book-info-sametype-content {

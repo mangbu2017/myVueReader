@@ -1,7 +1,7 @@
 <template>
     <div class="mall-long">
         <MallTypeTitle :title="this.title" :major="this.content"></MallTypeTitle>
-        <div class="mall-type-content" v-for="(item, index) in books" :key="index">
+        <div class="mall-type-content" v-for="(item, index) in books" :key="index" @click="onLinkToInfo(item._id)">
             <img :src="staticUrl + item.cover">
             <div class="mall-type-content-introduce">
                 <p class="introduce-1">{{item.title}}</p>
@@ -33,10 +33,17 @@
         ],
         created(){
             ajax.getCategoryInfo('male', 'hot', this.content, '', 0, 3).then((res) => {
-                this.books = res.data.data.books;
+                console.log(res);
+                this.books = res.data.books;
+                console.log(this.books);
                 this.books.length = 3;
             })
-        } 
+        },
+        methods: {
+            onLinkToInfo(id) {
+                this.$router.push({name: 'bookinfo', params:{bookId: id}});
+            }
+        }
     }
 </script>
 <style scoped lang="less">

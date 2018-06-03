@@ -3,10 +3,10 @@
         <div class="search-header">
             <div style="display:flex;align-items: center" @click="onBack">
                 <img src="../../assets/back.svg">
-                <button class="search-header-left">返回</button>
+                <div class="search-header-left">返回</div>
             </div> 
             <input type="text" placeholder="搜索书名或者作者名" v-model="keyword">
-            <button class="search-header-right" @click="onClickSearch">搜索</button>
+            <div class="search-header-right" @click="onClickSearch">搜索</div>
         </div>
         <router-view></router-view>
     </div>
@@ -35,7 +35,7 @@
 
                 Indicator.open();
                 ajax.getSearch(this.keyword).then((res) => {
-                    let books = res.data.data.books;
+                    let books = res.data.books;
                     this.$store.commit('SET_BOOKS', books);
                     this.$router.push({name: 'aftersearch'});
                     Indicator.close();
@@ -54,21 +54,20 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
+        width: 96vw;
         align-items: center;
         background-color: #26a2ff;
-        box-sizing: border-box;
         color: #fff;
         display: flex;
-        font-size: 14px;
+        font-size: 5vw;
         height: 40px;
-        padding: 0 10px;
+        padding: 0 2vw;
         img {
             width: 20px;
         }
-        button {
+        div {
             color: #fff;
-            outline: none;
+            // outline: none;
             &.search-header-left {
                 font-size: .8rem;
                 font-weight: bold;
@@ -76,16 +75,17 @@
             }
             &.search-header-right {
                 font-size: .7rem;
-                margin-left: 8px;
+                // margin-left: 8px;
                 font-weight: bold;
             }
         }
         input {
             outline: none;
-            width: 65vw;
+            flex: 1;
             height: 26px;
             border-radius: 5px 5px;
             border: 1px solid #fff;
+            margin: 0 1vw;
         }
     }
 }

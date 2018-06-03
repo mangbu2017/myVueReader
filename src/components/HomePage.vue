@@ -13,13 +13,15 @@
         <book-shelf class="tab-container"></book-shelf>
       </mt-tab-container-item>
       <mt-tab-container-item id="书城">
-        <book-mall class="tab-container"></book-mall>
+        <keep-alive>
+          <book-mall class="tab-container"></book-mall>
+        </keep-alive>
       </mt-tab-container-item>
       <mt-tab-container-item id="排行榜">
         <ranking-list class="tab-container"></ranking-list>
       </mt-tab-container-item>
     </mt-tab-container>
-    <mt-tabbar v-model="selected" fixed> 
+    <mt-tabbar v-model="selected" fixed style="font-size: 1rem  "> 
       <mt-tab-item id="书架" footer>
           <img slot="icon" src="../assets/shujia.png" alt="">
         书架
@@ -54,7 +56,6 @@ export default {
   },
   methods: {
     linkToSearch() {
-      // console.log('为什么不跳转呢？弟弟');
       this.$router.push({name: 'search'});
     }
   },
@@ -83,7 +84,7 @@ export default {
 <style scoped lang="less">
   .tab-container {
     box-sizing: border-box;
-    padding-top: 6vh;
+    padding-top: 7vh;
     padding-bottom: 11vh;
     width: 100vw;
     min-height: 100vh;

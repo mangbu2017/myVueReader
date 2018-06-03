@@ -2,7 +2,7 @@
     <div class="mall-type">
         <mall-type-title :title="title" :major="this.content"></mall-type-title>
         <div class="mall-type-content" v-if="books">
-            <div v-for="(item, index) in books" :key="index">
+            <div v-for="(item, index) in books" :key="index" @click="onLinkToInfo(item._id)">
                 <img :src="staticUrl + item.cover">
                 <span>{{item.title}}</span>
             </div>
@@ -28,9 +28,14 @@
         },
         created(){
             ajax.getCategoryInfo('male', 'hot', this.content, '', 0, 3).then((res) => {
-                this.books = res.data.data.books;
+                this.books = res.data.books;
             })
-        } 
+        },
+        methods: {
+            onLinkToInfo(id) {
+                this.$router.push({name: 'bookinfo', params:{bookId: id}});
+            }
+        }
     }
 </script>
 <style scoped lang="less">

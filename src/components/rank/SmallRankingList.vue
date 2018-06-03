@@ -61,7 +61,7 @@
                         console.log('no type');
                 }
                 ajax.getCategoryInfo('male', this.checked, this.major, '', 0, 20).then((res) => {
-                    this.books = res.data.data.books;
+                    this.books = res.data.books;
                     Indicator.close()
                 })
             }
@@ -75,7 +75,7 @@
                 this.booknum ++;
                 Indicator.open('加载中...');
                 ajax.getCategoryInfo('male', this.checked, this.major, '', 0, this.booknum * 20).then(res => {
-                    this.books = res.data.data.books;
+                    this.books = res.data.books;
                     this.topStatus = '';
                     Indicator.close();
                 }).catch(err => {
@@ -92,7 +92,7 @@
             next(vm => {
                 Indicator.open('加载中')
                 ajax.getCategoryInfo('male', 'hot' , vm.major, '', 0, 20).then((res) => {
-                    vm.books = res.data.data.books;
+                    vm.books = res.data.books;
                     Indicator.close()
                 })
             })
@@ -101,7 +101,7 @@
 </script>
 <style scoped lang="less">
     .small-ranking-list {
-        padding-top: 6vh;
+        padding-top: 7vh;
         background-color: #f6f6f6;
         .ranking-nav {
             display: flex;

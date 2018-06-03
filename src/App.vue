@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import ajax from './js/api';
+  import ajax from './js/api';
 
-export default {
-  name: 'App',
-}
+  export default {
+    name: 'App',
+  }
 </script>
 
 <style>
@@ -72,9 +72,9 @@ a {
   background-color: #F1F1F1;
 }
 
-.mint-tab-item {
+/* .mint-tab-item {
   margin: 0 45px;
-}
+} */
 
 .mint-cell:last-child {
   background-position-x: 10px;
@@ -89,5 +89,9 @@ a {
     z-index: 1;
     width: 100vh;
 } */
+
+.mint-header {
+  height: 7vh;
+}
 
 </style>

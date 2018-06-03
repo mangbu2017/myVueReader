@@ -63,7 +63,7 @@
                         console.log('no rank type');
                 }
                 ajax.getRank(this.rankid).then((res) => {
-                    this.books = res.data.data.ranking.books.slice(0, 20);
+                    this.books = res.data.ranking.books.slice(0, 20);
                     Indicator.close();
                 }).catch((err)=> {
                     Indicator.close();
@@ -83,7 +83,7 @@
                 Indicator.open('加载中...');
 
                 ajax.getRank(this.rankid).then((res) => {
-                    this.books = res.data.data.ranking.books.slice(0, 20 * this.booknum);
+                    this.books = res.data.ranking.books.slice(0, 20 * this.booknum);
                     Indicator.close();
                 }).catch((err)=> {
                     console.log(err);
@@ -98,7 +98,8 @@
                 Indicator.open('加载中');
                 let type = to.params.type;
                 ajax.getRank(vm.week).then((res) => {
-                    vm.books = res.data.data.ranking.books.slice(0, 20);
+                    console.log(res);
+                    vm.books = res.data.ranking.books.slice(0, 20);
                     Indicator.close();
                 })
             })
@@ -108,7 +109,7 @@
 
 <style scoped lang="less">
     .rankinginfo {
-        padding-top: 6vh;
+        padding-top: 7vh;
         background-color: #f6f6f6;
         .ranking-nav {
             display: flex;
